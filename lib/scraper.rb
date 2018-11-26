@@ -7,7 +7,7 @@ class Scraper
 	attr_reader :articles
 
 	def initialize(url)
-		Selenium::WebDriver::Chrome.driver_path = "./chromedriver"
+		Selenium::WebDriver::Chrome.driver_path = "../chromedriver"
 		Capybara.register_driver :selenium do |app|  
 		  Capybara::Selenium::Driver.new(app, browser: :chrome)
 		end
@@ -29,8 +29,6 @@ class Scraper
 		@browser.all(".cfix figure a").map { |a| links.push(a["href"]) }
 		links.delete_if { |link| link.include? "forum" or link.include? "#comments" or link.include? "kurs.onliner" }
 		links.uniq!
-		puts links
-=begin
 		links.each do |link| 
 			@browser.visit(link) 
 
@@ -47,11 +45,10 @@ class Scraper
 
 			@articles.push(Article.new(title, image, text))
 		end 
-=end
 	end
 
 	def save
-		file_path = "./onliner_articles.csv"
+		file_path = "../onliner_articles.csv"
 		CSV.open(file_path, "w") do |csv|
 			@articles.each { |article| csv << [article.title, article.img_url, article.text[0..200]] } # delete [0..200] to save full text
 		end
@@ -60,5 +57,4 @@ end
 
 scraper = Scraper.new("https://www.onliner.by/")
 scraper.get_info
-#scraper.save
-
+scraper.save
