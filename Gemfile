@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem "capybara"
-gem "selenium-webdriver"
-gem "csv"
+gem 'capybara'
+gem 'csv'
+gem 'selenium-webdriver'
